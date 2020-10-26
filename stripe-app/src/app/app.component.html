@@ -1,0 +1,21 @@
+<form novalidate (ngSubmit)="pay()" [formGroup]="stripeTest">
+  <div>
+    <input type="text" formControlName="name" placeholder="Jane Doe">
+  </div>
+
+  <div>
+    <input type="text" formControlName="email" placeholder="jk@gmail.com">
+  </div>
+
+  <div>
+    <input type="text" formControlName="phone" placeholder="964227615">
+  </div>
+
+  <div style="width: 50%;">
+    <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions">
+    </ngx-stripe-card>
+  </div>
+  <button type="submit">
+    Pay
+  </button>
+</form>
