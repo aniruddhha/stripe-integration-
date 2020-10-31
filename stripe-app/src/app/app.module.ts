@@ -12,10 +12,11 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   imports: [
     BrowserModule,
+    NgxStripeModule.forRoot('pk_test_51Hg7QJEAUKVCi0T14XviDRgLODAu1sltee8dlVEYLP3wuOnQdJe5BHT22MuSLUZruI7lC9465pJuTZj8MkD3XKli00jFGgewHE'),
+    HttpClientModule,
+
     ReactiveFormsModule,
     FormsModule,
-    NgxStripeModule.forRoot(''),
-    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

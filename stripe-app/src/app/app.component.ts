@@ -36,7 +36,7 @@ export class AppComponent {
     locale: 'en'
   };
 
-  stripeTest: FormGroup;
+  custInfo: FormGroup;
   secrete: string
 
   constructor(
@@ -46,43 +46,53 @@ export class AppComponent {
   ) { }
 
   ngOnInit(): void {
-    this.stripeTest = this.fb.group({
+    this.custInfo = this.fb.group({
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required]],
-      address: this.fb.group({
-        city: '',
-        country: '',
-        line1: '',
-        line2: '',
-        state: ''
-      })
+      couponCode: [],
+      city: [''],
+      currency: [''],
+      country: [''],
+      line1: [''],
+      line2: [''],
+      state: [''],
+      zip: ['']
     });
 
-    this.http.paymentIntent().subscribe(res => this.secrete = res['clientSecret'])
+    // this.http.paymentIntent().subscribe(res => this.secrete = res['clientSecret'])
   }
 
-  pay() {
-    this.stripeService.confirmCardPayment(this.secrete, {
+  saveBilling() {
+    this.http.paymentIntent(this.custInfo.value).subscribe(res => this.secrete = res['clientSecret'])
+  }
+
+  checkout() {
+    console.log('checkeed out')
+    this.stripeService.confirmCardPayment(
+      this.secrete, {
       payment_method: {
         card: this.card.element,
         billing_details: {
-          name: this.stripeTest.get('name').value,
-          email: this.stripeTest.get('email').value,
-          phone: this.stripeTest.get('phone').value,
+          name: this.custInfo.get('name').value,
+          email: this.custInfo.get('email').value,
+          phone: this.custInfo.get('phone').value,
           address: {
-            city: '',
-            country: '',
-            line1: '',
-            line2: '',
-            state: ''
+            city: this.custInfo.get('city').value,
+            country: this.custInfo.get('country').value,
+            line1: this.custInfo.get('line1').value,
+            line2: this.custInfo.get('line2').value,
+            state: this.custInfo.get('state').value
           }
         },
       },
-      receipt_email: 'aniruddha.kudalkar@gmail.com',
+      receipt_email: this.custInfo.get('email').value,
       return_url: 'http://localhost:3000/returnUrl'
     }).subscribe(
       payRes => console.log(payRes)
     )
   }
 }
+
+
+

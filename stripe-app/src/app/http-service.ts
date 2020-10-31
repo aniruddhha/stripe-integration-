@@ -12,7 +12,7 @@ export class CardHttpService {
     ) {
 
     }
-    paymentIntent(): Observable<any> {
-        return this.http.post('http://localhost:3000/create-payment-intent', { user: 10 })
+    paymentIntent(cust: {}): Observable<any> {
+        return this.http.post('http://localhost:3000/create-payment-intent', cust)
     }
 }

@@ -9,30 +9,26 @@ app.use(express.static("."));
 app.use(express.json());
 
 const calculateOrderAmount = items => {
-    // Replace this constant with a calculation of the order's amount
-    // Calculate the order total on the server to prevent
-    // people from directly manipulating the amount on the client
     return 1400;
 };
 app.post("/create-payment-intent", async (req, res) => {
     const { items } = req.body;
     // Create a PaymentIntent with the order amount and currency
-    console.log(req.body.user)
     const paymentIntent = await stripe.paymentIntents.create({
         amount: calculateOrderAmount(items),
-        currency: "inr",
-        description: 'hello test payment',
-        shipping: {
-            name: 'Parag',
-            address: {
-                line1: 'Paud Road',
-                postal_code: '411038',
-                city: 'pune',
-                state: 'MH',
-                country: 'IN',
-            },
-        },
-        receipt_email: 'aniruddha.kudalkar@gmail.com'
+        currency: 'inr',
+        description: req.body.description,
+        // shipping: {
+        //     name: req.body.name,
+        //     address: {
+        //         line1: req.body.line1,
+        //         postal_code: req.body.zip,
+        //         city: req.body.city,
+        //         state: req.body.state,
+        //         country: req.body.country,
+        //     },
+        // },
+        receipt_email: req.body.email,
     });
     res.json({
         clientSecret: paymentIntent.client_secret
